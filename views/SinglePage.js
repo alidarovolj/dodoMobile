@@ -21,9 +21,9 @@ export default function App({ route, navigation }) {
   const login = async () => {
     let a = String(await AsyncStorage.getItem("someKey"));
     setCurrentUser(a);
-    console.log(currentUserLog)
+    console.log(currentUserLog);
   };
-  login()
+  login();
   const order = {
     title: route.params.title,
     price: route.params.price,
@@ -40,12 +40,17 @@ export default function App({ route, navigation }) {
   var setItem = null;
   var finalPrice = null;
   async function sendOrder() {
-    console.log(currentUserLog)
-    var prevZakaz = await axios.get("https://6279ea5773bad506857f53b2.mockapi.io/api/orders");
+    console.log(currentUserLog);
+    var prevZakaz = await axios.get(
+      "https://6279ea5773bad506857f53b2.mockapi.io/api/orders"
+    );
     var prevZakazData = prevZakaz.data;
     var itemID = null;
     if (prevZakazData.length <= 0) {
-      await axios.post("https://6279ea5773bad506857f53b2.mockapi.io/api/orders", res);
+      await axios.post(
+        "https://6279ea5773bad506857f53b2.mockapi.io/api/orders",
+        res
+      );
       console.log("Отправлено");
     } else {
       prevZakazData.forEach((item) => {
@@ -64,7 +69,10 @@ export default function App({ route, navigation }) {
           result = item;
         }
       });
-      await axios.put("https://6279ea5773bad506857f53b2.mockapi.io/api/orders/" + itemID, result);
+      await axios.put(
+        "https://6279ea5773bad506857f53b2.mockapi.io/api/orders/" + itemID,
+        result
+      );
     }
   }
   return (
@@ -120,7 +128,9 @@ export default function App({ route, navigation }) {
                   flexWrap: "wrap",
                 }}
                 data={route.params.ingridients}
-                renderItem={({ item }) => {item + ", "}}
+                renderItem={({ item }) => {
+                  item + ", ";
+                }}
               />
               <Button onPress={sendOrder} title="Отправить заказ" />
               <View
@@ -147,8 +157,19 @@ export default function App({ route, navigation }) {
                       uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/6ddfe6ba104342928bf1b59acc8d508d.png",
                     }}
                   />
-                  <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 10, height: 32 }}>Сырный бортик</Text>
-                  <Text style={{ textAlign: 'center', fontWeight: 500 }}>800тг.</Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      textAlign: "center",
+                      marginBottom: 10,
+                      height: 32,
+                    }}
+                  >
+                    Сырный бортик
+                  </Text>
+                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                    800тг.
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -164,8 +185,19 @@ export default function App({ route, navigation }) {
                       uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DB9FFD8DC324",
                     }}
                   />
-                  <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 10, height: 32 }}>Острый халапеньо</Text>
-                  <Text style={{ textAlign: 'center', fontWeight: 500 }}>250тг.</Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      textAlign: "center",
+                      marginBottom: 10,
+                      height: 32,
+                    }}
+                  >
+                    Острый халапеньо
+                  </Text>
+                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                    250тг.
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -181,8 +213,19 @@ export default function App({ route, navigation }) {
                       uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DBA9907841D1",
                     }}
                   />
-                  <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 10, height: 32 }}>Чеддер и пармезан</Text>
-                  <Text style={{ textAlign: 'center', fontWeight: 500 }}>350тг.</Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      textAlign: "center",
+                      marginBottom: 10,
+                      height: 32,
+                    }}
+                  >
+                    Чеддер и пармезан
+                  </Text>
+                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                    350тг.
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -198,8 +241,19 @@ export default function App({ route, navigation }) {
                       uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DBA02B9BBDD1",
                     }}
                   />
-                  <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 10, height: 32 }}>Ветчина</Text>
-                  <Text style={{ textAlign: 'center', fontWeight: 500 }}>350тг.</Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      textAlign: "center",
+                      marginBottom: 10,
+                      height: 32,
+                    }}
+                  >
+                    Ветчина
+                  </Text>
+                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                    350тг.
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -215,8 +269,19 @@ export default function App({ route, navigation }) {
                       uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DB9FEDF53067",
                     }}
                   />
-                  <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 10, height: 32 }}>Цыпленок </Text>
-                  <Text style={{ textAlign: 'center', fontWeight: 500 }}>350тг.</Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      textAlign: "center",
+                      marginBottom: 10,
+                      height: 32,
+                    }}
+                  >
+                    Цыпленок{" "}
+                  </Text>
+                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                    350тг.
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -232,8 +297,19 @@ export default function App({ route, navigation }) {
                       uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DBA8CF1B6A99",
                     }}
                   />
-                  <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 10, height: 32 }}>Шампиньоны</Text>
-                  <Text style={{ textAlign: 'center', fontWeight: 500 }}>250тг.</Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      textAlign: "center",
+                      marginBottom: 10,
+                      height: 32,
+                    }}
+                  >
+                    Шампиньоны
+                  </Text>
+                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                    250тг.
+                  </Text>
                 </View>
               </View>
             </View>

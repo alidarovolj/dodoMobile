@@ -165,9 +165,7 @@ export default function Main({ navigation }) {
                   style={{ width: "100%", marginBottom: 100 }}
                   data={searchFilter}
                   renderItem={({ item }) => (
-                    <Pressable
-                      onPress={() => setModalSearchVisible(false)}
-                    >
+                    <Pressable onPress={() => setModalSearchVisible(false)}>
                       <Pressable
                         onPress={() => navigation.navigate("SinglePage", item)}
                       >
