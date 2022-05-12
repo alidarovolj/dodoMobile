@@ -11,20 +11,19 @@ import {
   FlatList,
   Image,
   TouchableHighlight,
+  Pressable,
   Modal,
   TextInput,
 } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Main({ navigation }) {
   var [allProducts, getProduct] = useState(null);
-  var [allOrders, getOrder] = useState(null);
+  var [searchFilter, setSearchFilter] = useState("");
+  var [allOrders, getOrder] = useState("");
   var [fullLogin, getLogin] = useState("");
   var [fullPhone, getPhone] = useState("");
-  const cookieInfoLogin = async () => {await AsyncStorage.getItem('loggedInLogin')}
-  
-  // const cookieInfoPhone = localStorage.getItem("loggedInPhone");
-  // const cookieInfoPassword = localStorage.getItem("loggedInPassword");
+  var [currentUserLog, setCurrentUser] = useState("");
   var [currentOrder, getCurrentOrder] = useState("");
   var [numberOfObjects, getNumber] = useState("");
   var [fullPassword, getPassword] = useState("");
@@ -32,10 +31,13 @@ export default function Main({ navigation }) {
   var [loginPassword, getPasswordName] = useState("");
   var [allUsers, getUser] = useState("");
   var [modalVisible, setModalVisible] = useState(false);
+  var [modalSearchVisible, setModalSearchVisible] = useState(false);
   function getProducts() {
     useEffect(() => {
       async function getAllProducts() {
-        let res = await axios.get("https://6279ea5773bad506857f53b2.mockapi.io/api/goods");
+        let res = await axios.get(
+          "https://6279ea5773bad506857f53b2.mockapi.io/api/goods"
+        );
         let newProducts = res.data;
         getProduct(newProducts);
       }
@@ -45,13 +47,12 @@ export default function Main({ navigation }) {
   function getOrders() {
     useEffect(() => {
       async function getAllOrders() {
-        let res = await axios.get("https://6279ea5773bad506857f53b2.mockapi.io/api/orders");
+        let res = await axios.get(
+          "https://6279ea5773bad506857f53b2.mockapi.io/api/orders"
+        );
         let newOrders = res.data;
         newOrders.forEach((element) => {
-          if (
-            element.user_login == cookieInfoLogin &&
-            element.status == false
-          ) {
+          if (element.user_login == currentUserLog && element.status == false) {
             getCurrentOrder((currentOrder = element));
             getNumber(currentOrder.goods.length);
           }
@@ -64,12 +65,26 @@ export default function Main({ navigation }) {
   function getUsers() {
     useEffect(() => {
       async function getAllUsers() {
-        let res = await axios.get("https://6279ea5773bad506857f53b2.mockapi.io/api/users");
+        let res = await axios.get(
+          "https://6279ea5773bad506857f53b2.mockapi.io/api/users"
+        );
         let newUsers = res.data;
-        getUser(newUsers);
+        getUser((allUsers = newUsers));
       }
       getAllUsers();
     }, []);
+  }
+  function onChangeSearch(res) {
+    let filteredData = allProducts.filter((x) =>
+      x.title.toLowerCase().includes(res)
+    );
+    setSearchFilter(filteredData);
+    // allProducts.forEach(prod => {
+    //   if(prod.includes(res)) {
+    //     console.log(prod)
+    //   }
+    // });
+    console.log(filteredData);
   }
   async function sendUser() {
     await axios.post("https://6279ea5773bad506857f53b2.mockapi.io/api/users", {
@@ -78,345 +93,438 @@ export default function Main({ navigation }) {
       password: fullPassword,
     });
   }
-  function login() {
-    allUsers?.forEach((item) => {
-      if (item.login === loginLogin && item.password === loginPassword) {
-        // localStorage.setItem("loggedInLogin", item.login);
-        const setData = async () => {await AsyncStorage.setItem('loggedInLogin')}
-        // localStorage.setItem("loggedInPhone", item.phone);
-        // localStorage.setItem("loggedInPassword", item.password);
-      } else {
-        console.log("Данные не совпадают");
-      }
-    });
-  }
-  // function setFunc() {
-  //   useEffect(() => {
-  //     async function setFunction() {
-  //       allUsers?.forEach((element) => {
-  //         if (element.login == cookieInfo) {
-  //           console.log("jhdkalsjdlksa");
-  //         } else {
-  //           console.log("nothing");
-  //         }
-  //       });
-  //     }
-  //     setFunction()
-  //   }, []);
+  // function login() {
+  // allUsers?.forEach((item) => {
+  //   if (item.login === loginLogin && item.password === loginPassword) {
+  //     console.log("совпадают");
+  //     async () => {
+  //       try {
+  //         await AsyncStorage.setItem("loggedInLogin", item.login);
+  //         let getIt = await AsyncStorage.getItem("loggedInLogin");
+  //         setCurrentUser(currentUserLog = getIt)
+  //       } catch (e) {
+  //         console.log(e)
+  //       }
+  //     };
+  //   } else {
+  //     console.log("Данные не совпадают");
+  //   }
+  // });
   // }
+  const saveValue = async () => {
+    await AsyncStorage.setItem("someKey", loginLogin);
+    // getOrders();
+  };
+  const showValue = async () => {
+    let a = String(await AsyncStorage.getItem("someKey"));
+    setCurrentUser(a);
+  };
   getProducts();
   getUsers();
-  getOrders();
-  // setFunc();
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.container}>
-          <Modal
-            animationType="slide"
-            // transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <ScrollView>
+    <SafeAreaView style={{ height: "100%" }}>
+      <View style={styles.container}>
+        <Modal
+          style={{ flex: 1, backgroundColor: "#fff" }}
+          animationType="slide"
+          // transparent={true}
+          visible={modalSearchVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalSearchVisible(!modalVisible);
+          }}
+        >
+          <SafeAreaView style={{ height: "100%" }}>
+            <View style={{ padding: 15 }}>
               <View
                 style={{
-                  minHeight: "63%",
-                  padding: 10,
-                  flex: 1,
-                  backgroundColor: "rgb(243, 243, 247)",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 30,
                 }}
               >
+                <TextInput
+                  style={{
+                    backgroundColor: "gray",
+                    padding: 5,
+                    borderRadius: 8,
+                    width: "100%",
+                  }}
+                  onChangeText={(e) => onChangeSearch(e)}
+                />
+                <Text
+                  style={{ marginLeft: 10 }}
+                  onPress={() => setModalSearchVisible(false)}
+                >
+                  Отменить
+                </Text>
+              </View>
+              <Pressable onPress={() => setModalSearchVisible(false)}>
+                <FlatList
+                  style={{ width: "100%", marginBottom: 100 }}
+                  data={searchFilter}
+                  renderItem={({ item }) => (
+                    <Pressable
+                      onPress={() => setModalSearchVisible(false)}
+                    >
+                      <Pressable
+                        onPress={() => navigation.navigate("SinglePage", item)}
+                      >
+                        <View
+                          style={{
+                            width: "100%",
+                            height: 170,
+                            padding: 15,
+                            borderBottom: "1px solid rgb(245, 245, 248)",
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Image
+                            style={{ width: "40%", height: 120 }}
+                            source={{ uri: item.images[0] }}
+                          />
+                          <View style={{ width: "60%", paddingLeft: 5 }}>
+                            <Text
+                              style={{ fontWeight: "600", marginBottom: 8 }}
+                            >
+                              {item.title}
+                            </Text>
+                            <Text>{item.desc}</Text>
+                            <Text
+                              style={{
+                                backgroundColor: "#ffefe5",
+                                color: "#de813f",
+                                paddingTop: 5,
+                                paddingBottom: 5,
+                                paddingRight: 10,
+                                paddingLeft: 10,
+                                fontSize: 18,
+                                borderRadius: 15,
+                                marginTop: 10,
+                              }}
+                            >
+                              от {item.price}т
+                            </Text>
+                          </View>
+                        </View>
+                      </Pressable>
+                    </Pressable>
+                  )}
+                />
+              </Pressable>
+            </View>
+          </SafeAreaView>
+        </Modal>
+        <Modal
+          style={{ flex: 1, backgroundColor: "#fff" }}
+          animationType="slide"
+          // transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <SafeAreaView>
+            <View
+              style={{
+                padding: 10,
+                backgroundColor: "rgb(243, 243, 247)",
+              }}
+            >
+              <Text
+                style={{
+                  padding: 10,
+                  borderRadius: 999,
+                }}
+                onPress={() => setModalVisible((modalVisible = false))}
+              >
+                <FontAwesome
+                  style={{
+                    fontSize: 20,
+                  }}
+                  name="chevron-left"
+                />
+              </Text>
+              <View>
                 <Text
                   style={{
-                    backgroundColor: "white",
-                    padding: 10,
-                    borderRadius: "100%",
+                    textAlign: "center",
+                    fontSize: 24,
+                    fontWeight: "700",
+                    marginBottom: 10,
                   }}
-                  onPress={() => setModalVisible((modalVisible = false))}
                 >
-                  <FontAwesome
-                    style={{
-                      fontSize: 20,
-                    }}
-                    name="chevron-down"
-                  />
+                  Регистрация
                 </Text>
-                <View>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 24,
-                      fontWeight: 700,
-                      marginBottom: 20,
-                    }}
-                  >
-                    Регистрация
-                  </Text>
-                  <Text
-                    style={{ fontSize: 19, fontWeight: 400, marginBottom: 10 }}
-                  >
-                    Логин
-                  </Text>
-                  <TextInput
-                    onChangeText={(e) => getLogin((fullLogin = e))}
-                    style={{
-                      backgroundColor: "white",
-                      padding: 10,
-                      borderRadius: 8,
-                      marginBottom: 15,
-                    }}
-                    placeholder="Укажите логин"
-                  />
-                  <Text
-                    style={{ fontSize: 19, fontWeight: 400, marginBottom: 10 }}
-                  >
-                    Телефон
-                  </Text>
-                  <TextInput
-                    onChangeText={(e) => getPhone((fullPhone = e))}
-                    style={{
-                      backgroundColor: "white",
-                      padding: 10,
-                      borderRadius: 8,
-                      marginBottom: 15,
-                    }}
-                    placeholder="Укажите телефон"
-                  />
-                  <Text
-                    style={{ fontSize: 19, fontWeight: 400, marginBottom: 10 }}
-                  >
-                    Пароль
-                  </Text>
-                  <TextInput
-                    onChangeText={(e) => getPassword((fullPassword = e))}
-                    style={{
-                      backgroundColor: "white",
-                      padding: 10,
-                      borderRadius: 8,
-                      marginBottom: 20,
-                    }}
-                    placeholder="Укажите пароль"
-                  />
-                  <Button
-                    title="Отправить"
-                    onPress={sendUser}
-                    style={{
-                      width: "100%",
-                      backgroundColor: "rgb(255, 105, 0)",
-                      borderRadius: 100,
-                    }}
-                  />
-                </View>
+                <Text
+                  onPress={showValue()}
+                  style={{
+                    fontSize: 19,
+                    fontWeight: "400",
+                    marginBottom: 10,
+                  }}
+                >
+                  Логин
+                </Text>
+                <TextInput
+                  onChangeText={(e) => getLogin((fullLogin = e))}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 5,
+                    borderRadius: 8,
+                    marginBottom: 10,
+                  }}
+                  placeholder="Укажите логин"
+                />
+                <Text
+                  style={{
+                    fontSize: 19,
+                    fontWeight: "400",
+                    marginBottom: 10,
+                  }}
+                >
+                  Телефон
+                </Text>
+                <TextInput
+                  onChangeText={(e) => getPhone((fullPhone = e))}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 5,
+                    borderRadius: 8,
+                    marginBottom: 10,
+                  }}
+                  placeholder="Укажите телефон"
+                />
+                <Text
+                  style={{
+                    fontSize: 19,
+                    fontWeight: "400",
+                    marginBottom: 10,
+                  }}
+                >
+                  Пароль
+                </Text>
+                <TextInput
+                  onChangeText={(e) => getPassword((fullPassword = e))}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 5,
+                    borderRadius: 8,
+                    marginBottom: 10,
+                  }}
+                  placeholder="Укажите пароль"
+                />
+                <Button
+                  title="Отправить"
+                  onPress={sendUser}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "rgb(255, 105, 0)",
+                    borderRadius: 100,
+                  }}
+                />
               </View>
-              <View
-                style={{
-                  padding: 10,
-                  flex: 1,
-                  backgroundColor: "rgb(243, 243, 247)",
-                }}
-              >
-                <View>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 24,
-                      fontWeight: 700,
-                      marginBottom: 20,
-                    }}
-                  >
-                    Войти
-                  </Text>
-                  <Text
-                    style={{ fontSize: 19, fontWeight: 400, marginBottom: 10 }}
-                  >
-                    Логин
-                  </Text>
-                  <TextInput
-                    onChangeText={(e) => getLoginName((loginLogin = e))}
-                    style={{
-                      backgroundColor: "white",
-                      padding: 10,
-                      borderRadius: 8,
-                      marginBottom: 15,
-                    }}
-                    placeholder="Укажите логин"
-                  />
-                  <Text
-                    style={{ fontSize: 19, fontWeight: 400, marginBottom: 10 }}
-                  >
-                    Пароль
-                  </Text>
-                  <TextInput
-                    onChangeText={(e) => getPasswordName((loginPassword = e))}
-                    style={{
-                      backgroundColor: "white",
-                      padding: 10,
-                      borderRadius: 8,
-                      marginBottom: 20,
-                    }}
-                    placeholder="Укажите пароль"
-                  />
-                  <Button
-                    title="Отправить"
-                    onPress={login}
-                    style={{
-                      width: "100%",
-                      backgroundColor: "rgb(255, 105, 0)",
-                      borderRadius: 100,
-                    }}
-                  />
-                </View>
+            </View>
+            <Text>{currentUserLog}</Text>
+            <View
+              style={{
+                padding: 10,
+                backgroundColor: "rgb(243, 243, 247)",
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 24,
+                    fontWeight: "700",
+                    marginBottom: 20,
+                  }}
+                >
+                  Войти
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 19,
+                    fontWeight: "400",
+                    marginBottom: 10,
+                  }}
+                >
+                  Логин
+                </Text>
+                <TextInput
+                  onChangeText={(e) => getLoginName((loginLogin = e))}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 5,
+                    borderRadius: 8,
+                    marginBottom: 10,
+                  }}
+                  placeholder="Укажите логин"
+                />
+                <Text
+                  style={{
+                    fontSize: 19,
+                    fontWeight: "400",
+                    marginBottom: 10,
+                  }}
+                >
+                  Пароль
+                </Text>
+                <TextInput
+                  onChangeText={(e) => getPasswordName((loginPassword = e))}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 5,
+                    borderRadius: 8,
+                    marginBottom: 10,
+                  }}
+                  placeholder="Укажите пароль"
+                />
+                <Button
+                  title="Отправить"
+                  onPress={saveValue}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "rgb(255, 105, 0)",
+                    borderRadius: 100,
+                  }}
+                />
               </View>
-            </ScrollView>
-          </Modal>
+            </View>
+          </SafeAreaView>
+        </Modal>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            padding: 15,
+          }}
+        >
           <View
             style={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-              padding: 15,
             }}
           >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 22, fontWeight: "600", marginRight: 7 }}>
-                Алматы
-              </Text>
-              <FontAwesome name="chevron-down" />
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <FontAwesome style={{ fontSize: 20 }} name="search" />
-              <View style={{ textAlign: "center", marginLeft: 10 }}>
-                <FontAwesome
-                  onPress={() => setModalVisible((modalVisible = true))}
-                  style={{ fontSize: 20 }}
-                  name="user"
-                />
-                {/* <Text>{cookieInfoLogin}</Text> */}
-              </View>
-            </View>
+            <Text style={{ fontSize: 22, fontWeight: "600", marginRight: 7 }}>
+              {/* Алматы */}
+              {currentUserLog}
+            </Text>
+            <FontAwesome name="chevron-down" />
           </View>
-          <View style={{ padding: 15, width: "100%" }}>
-            <View
-              style={{
-                backgroundColor: "#f5f5f8",
-                padding: 5,
-                borderRadius: 10,
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <Text
-                style={{
-                  width: "50%",
-                  textAlign: "center",
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                  fontSize: 19,
-                  fontWeight: "500",
-                  backgroundColor: "#fff",
-                }}
-              >
-                На доставку
-              </Text>
-              <Text
-                style={{
-                  width: "50%",
-                  textAlign: "center",
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                  fontSize: 19,
-                  fontWeight: "500",
-                }}
-              >
-                В зале
-              </Text>
-            </View>
-          </View>
-          <FlatList
-            style={{ width: "100%", marginBottom: 100 }}
-            data={allProducts}
-            renderItem={({ item }) => (
-              <TouchableHighlight
-                onPress={() => navigation.navigate("SinglePage", item)}
-              >
-                <View
-                  style={{
-                    width: "100%",
-                    height: 230,
-                    padding: 15,
-                    borderBottom: "1px solid rgb(245, 245, 248)",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Image
-                    style={{ width: 150, height: 150, objectFit: "cover" }}
-                    source={{ uri: item.images[0] }}
-                  />
-                  <View style={{ width: "60%", paddingLeft: 5 }}>
-                    <Text style={{ fontWeight: "600", marginBottom: 8 }}>
-                      {item.title}
-                    </Text>
-                    <Text>{item.desc}</Text>
-                    <Text
-                      style={{
-                        backgroundColor: "#ffefe5",
-                        color: "#de813f",
-                        width: 'fit-content%',
-                        paddingTop: 5,
-                        paddingBottom: 5,
-                        paddingRight: 10,
-                        paddingLeft: 10,
-                        fontSize: 18,
-                        borderRadius: 15,
-                        marginTop: 10,
-                      }}
-                    >
-                      от {item.price}т
-                    </Text>
-                  </View>
-                </View>
-              </TouchableHighlight>
-            )}
-          />
-        </View>
-      </ScrollView>
-      <View style={{ position: "relative" }}>
-        <TouchableHighlight onPress={() => navigation.navigate("Cart")} >
           <View
             style={{
-              position: "fixed",
-              bottom: 20,
-              right: 20,
-              boxShadow: "rgb(0 0 0 / 20%) 0px 10px 20px",
-              borderRadius: "100%",
               display: "flex",
-              justifyContent: "center",
-              width: "100%",
-              backgroundColor: "#fff",
-              width: 56,
-              height: 56,
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
+            <Pressable onPress={() => setModalSearchVisible(true)}>
+              <FontAwesome style={{ fontSize: 20 }} name="search" />
+            </Pressable>
+            <View style={{ textAlign: "center", marginLeft: 10 }}>
+              <Pressable onPress={() => setModalVisible(true)}>
+                <FontAwesome style={{ fontSize: 20 }} name="user" />
+              </Pressable>
+              <Text style={{ color: "#000" }}>{currentUserLog}</Text>
+            </View>
+          </View>
+        </View>
+        <View style={{ padding: 15, width: "100%" }}>
+          <View
+            style={{
+              backgroundColor: "#f5f5f8",
+              padding: 5,
+              borderRadius: 10,
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Text
+              style={{
+                width: "50%",
+                textAlign: "center",
+                paddingTop: 5,
+                paddingBottom: 5,
+                fontSize: 19,
+                fontWeight: "500",
+                backgroundColor: "#fff",
+              }}
+            >
+              На доставку
+            </Text>
+            <Text
+              style={{
+                width: "50%",
+                textAlign: "center",
+                paddingTop: 5,
+                paddingBottom: 5,
+                fontSize: 19,
+                fontWeight: "500",
+              }}
+            >
+              В зале
+            </Text>
+          </View>
+        </View>
+        <FlatList
+          style={{ width: "100%", marginBottom: 100 }}
+          data={allProducts}
+          renderItem={({ item }) => (
+            <Pressable onPress={() => navigation.navigate("SinglePage", item)}>
+              <View
+                style={{
+                  width: "100%",
+                  height: 170,
+                  padding: 15,
+                  borderBottom: "1px solid rgb(245, 245, 248)",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Image
+                  style={{ width: "40%", height: 120 }}
+                  source={{ uri: item.images[0] }}
+                />
+                <View style={{ width: "60%", paddingLeft: 5 }}>
+                  <Text style={{ fontWeight: "600", marginBottom: 8 }}>
+                    {item.title}
+                  </Text>
+                  <Text>{item.desc}</Text>
+                  <Text
+                    style={{
+                      backgroundColor: "#ffefe5",
+                      color: "#de813f",
+                      paddingTop: 5,
+                      paddingBottom: 5,
+                      paddingRight: 10,
+                      paddingLeft: 10,
+                      fontSize: 18,
+                      borderRadius: 15,
+                      marginTop: 10,
+                    }}
+                  >
+                    от {item.price}т
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+          )}
+        />
+      </View>
+      <View style={{ position: "relative" }}>
+        <Pressable onPress={() => navigation.navigate("Cart")}>
+          <View style={{ backgroundColor: "rgb(255, 105, 0)" }}>
             {/* <svg
               style={{ margin: "auto" }}
               width="32"
@@ -435,22 +543,19 @@ export default function Main({ navigation }) {
             </svg> */}
             <Text
               style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                backgroundColor: "rgb(255, 105, 0)",
                 color: "#fff",
-                width: 21,
-                height: 21,
-                borderRadius: "100%",
+                padding: 15,
+                textAlign: "center",
+                fontWeight: "700",
+                borderRadius: 999,
                 display: "flex",
                 justifyContent: "center",
               }}
             >
-              {numberOfObjects}
+              Корзина {numberOfObjects}
             </Text>
           </View>
-        </TouchableHighlight>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

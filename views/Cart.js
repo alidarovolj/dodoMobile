@@ -11,24 +11,33 @@ import {
   FlatList,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Cart({ navigation }) {
   var [currentOrder, getCurrentOrder] = useState("");
   var [allOrders, getOrder] = useState(null);
   var [numberOfObjects, getNumber] = useState("");
-  const cookieInfoLogin = localStorage.getItem("loggedInLogin");
-  function getOrders() {
+  var [currentUserLog, setCurrentUser] = useState("");
+  async function getOrders() {
     useEffect(() => {
       async function getAllOrders() {
+        try {
+          setCurrentUser(String(await AsyncStorage.getItem('someKey')));
+        } catch (error) {
+          console.log(error)
+        }
         let res = await axios.get("https://6279ea5773bad506857f53b2.mockapi.io/api/orders");
         let newOrders = res.data;
         newOrders.forEach((element) => {
           if (
-            element.user_login == cookieInfoLogin &&
+            element.user_login == currentUserLog &&
             element.status == false
           ) {
             getCurrentOrder((currentOrder = element));
             getNumber(currentOrder.goods.length);
+            console.log(currentOrder)
+          } else {
+            console.log("не работает")
           }
         });
         getOrder((allOrders = newOrders));
@@ -43,11 +52,10 @@ export default function Cart({ navigation }) {
     console.log(result)
     await axios.put("https://6279ea5773bad506857f53b2.mockapi.io/api/orders/" + itemID, result)
   }
-  
-  getOrders();
+  console.log(currentUserLog)
+  getOrders()
   return (
     <SafeAreaView>
-      <ScrollView>
         <View
           style={{
             width: "100%",
@@ -58,10 +66,11 @@ export default function Cart({ navigation }) {
             backgroundColor: "#fff",
           }}
         >
-          <Text style={{ fontWeight: 400, fontSize: 18 }}>Корзина</Text>
+        <Text>{currentUserLog}</Text>
+          <Text style={{ fontSize: 18 }}>Корзина</Text>
         </View>
         <View style={{ width: "100%", backgroundColor: "#fff", padding: 16 }}>
-          <Text style={{ fontSize: 24, fontWeight: 500, marginBottom: 20 }}>
+          <Text style={{ fontSize: 24, marginBottom: 20 }}>
             {numberOfObjects} товар(ов) на {currentOrder.price} тг
           </Text>
           <FlatList
@@ -72,7 +81,7 @@ export default function Cart({ navigation }) {
                 <Image style={{ width: 100, height: 100 }}
                     source={{ uri: item.image }}/>
                 <View>
-                  <Text style={{ fontWeight: 900, fontSize: 20 }}>{ item.title }</Text>
+                  <Text style={{ fontSize: 20 }}>{ item.title }</Text>
                   <Text>{ item.price }</Text>
                 </View>
               </View>
@@ -80,7 +89,6 @@ export default function Cart({ navigation }) {
           />
           <Button onPress={setStatus} title="Заказать" style={{ width: "100%" }}/>
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 }

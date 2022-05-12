@@ -11,12 +11,19 @@ import {
   FlatList,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App({ route, navigation }) {
+  var [currentUserLog, setCurrentUser] = useState("");
   const loadScene = () => {
     navigation.goBack();
   };
-  const login = localStorage.getItem("loggedInLogin");
+  const login = async () => {
+    let a = String(await AsyncStorage.getItem("someKey"));
+    setCurrentUser(a);
+    console.log(currentUserLog)
+  };
+  login()
   const order = {
     title: route.params.title,
     price: route.params.price,
@@ -33,6 +40,7 @@ export default function App({ route, navigation }) {
   var setItem = null;
   var finalPrice = null;
   async function sendOrder() {
+    console.log(currentUserLog)
     var prevZakaz = await axios.get("https://6279ea5773bad506857f53b2.mockapi.io/api/orders");
     var prevZakazData = prevZakaz.data;
     var itemID = null;
