@@ -28,17 +28,18 @@ export default function App({ route, navigation }) {
     title: route.params.title,
     price: route.params.price,
     options: [],
+    image: route.params.images[1],
   };
   const price = route.params.price;
   var res = {
     goods: [order],
-    user_login: login,
+    user_login: currentUserLog,
     price: price,
     status: false,
   };
   var result = null;
   var setItem = null;
-  var finalPrice = null;
+  var finalPrice = 0;
   async function sendOrder() {
     console.log(currentUserLog);
     var prevZakaz = await axios.get(
@@ -51,28 +52,36 @@ export default function App({ route, navigation }) {
         "https://6279ea5773bad506857f53b2.mockapi.io/api/orders",
         res
       );
-      console.log("Отправлено");
+      console.log("1");
     } else {
-      prevZakazData.forEach((item) => {
-        if (item.user_login == login && item.status === false) {
+      prevZakazData.forEach(async (item) => {
+        if (item.user_login == currentUserLog && item.status === false) {
           item.goods.forEach((element) => {
-            finalPrice += element.price;
+            finalPrice += finalPrice + parseInt(element.price);
           });
           setItem = {
             title: route.params.title,
             price: route.params.price,
             options: [],
+            image: route.params.images[1],
           };
-          item.price = finalPrice + setItem.price;
+          item.price = finalPrice + parseInt(setItem.price);
           item.goods.push(setItem);
           itemID = item.id;
           result = item;
+          await axios.put(
+            "https://6279ea5773bad506857f53b2.mockapi.io/api/orders/" + itemID,
+            result
+          );
+          console.log("2");
+        } else if (item.user_login == currentUserLog && item.status === true && item.status != false ) {
+          await axios.post(
+            "https://6279ea5773bad506857f53b2.mockapi.io/api/orders",
+            res
+          );
+          console.log("3");
         }
       });
-      await axios.put(
-        "https://6279ea5773bad506857f53b2.mockapi.io/api/orders/" + itemID,
-        result
-      );
     }
   }
   return (

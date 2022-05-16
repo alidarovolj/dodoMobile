@@ -18,19 +18,18 @@ export default function Cart({ navigation }) {
   var [allOrders, getOrder] = useState(null);
   var [numberOfObjects, getNumber] = useState("");
   var [currentUserLog, setCurrentUser] = useState("alidarov");
+  async function setCurUser() {
+    let res = await AsyncStorage.getItem("someKey");
+    setCurrentUser(res);
+  }
   async function getOrders() {
     useEffect(() => {
       async function getAllOrders() {
-        // try {
-        //   setCurrentUser(String(await AsyncStorage.getItem("someKey")));
-        // } catch (error) {
-        //   console.log(error);
-        // }
         let res = await axios.get(
           "https://6279ea5773bad506857f53b2.mockapi.io/api/orders"
         );
         let newOrders = res.data;
-        newOrders.forEach((element) => {
+        newOrders.forEach(async (element) => {
           if (element.user_login == currentUserLog && element.status == false) {
             getCurrentOrder((currentOrder = element));
             getNumber(currentOrder.goods.length);
@@ -43,6 +42,7 @@ export default function Cart({ navigation }) {
       }
       getAllOrders();
     }, []);
+    console.log(currentUserLog);
   }
   async function setStatus() {
     let result = currentOrder;
@@ -55,6 +55,7 @@ export default function Cart({ navigation }) {
     );
   }
   console.log(currentUserLog);
+  setCurUser();
   getOrders();
   return (
     <SafeAreaView>

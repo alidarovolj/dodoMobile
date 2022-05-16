@@ -492,7 +492,7 @@ export default function Main({ navigation }) {
               >
                 <Image
                   style={{ width: "40%", height: 120 }}
-                  source={{ uri: item.images[0] }}
+                  source={{ uri: item.images[1] }}
                 />
                 <View style={{ width: "60%", paddingLeft: 5 }}>
                   <Text style={{ fontWeight: "600", marginBottom: 8 }}>
