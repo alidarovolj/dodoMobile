@@ -32,7 +32,7 @@ export default function App({ route, navigation }) {
     options: [],
     image: route.params.images[1],
   };
-  const price = route.params.price;
+  var price = route.params.price;
   var res = {
     goods: [order],
     user_login: currentUserLog,
@@ -42,9 +42,11 @@ export default function App({ route, navigation }) {
   var result = null;
   var setItem = null;
   var finalPrice = 0;
+  var totalIngridient = 0;
   function sendIngridient(obj) {
     getIngridient.push(obj)
-    console.log(getIngridient)
+    totalIngridient = totalIngridient + parseInt(obj.price)
+    console.log(totalIngridient)
   }
   async function sendOrder() {
     console.log(currentUserLog);
@@ -63,11 +65,11 @@ export default function App({ route, navigation }) {
       prevZakazData.forEach(async (item) => {
         if (item.user_login == currentUserLog && item.status === false) {
           item.goods.forEach((element) => {
-            finalPrice += finalPrice + parseInt(element.price);
+            finalPrice = finalPrice + parseInt(element.price);
           });
           setItem = {
             title: route.params.title,
-            price: route.params.price,
+            price: parseInt(route.params.price) + totalIngridient,
             options: [],
             image: route.params.images[1],
             ingridients: getIngridient
