@@ -140,7 +140,7 @@ export default function App({ route, navigation }) {
                 }}
                 data={route.params.ingridients}
                 renderItem={({ item }) => (
-                  <Pressable onPress={ sendIngridient (item) }>
+                  <Pressable onPress={ sendIngridient.bind(this, item) }>
                     <View
                       style={{
                         width: "100%",
