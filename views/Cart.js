@@ -18,6 +18,12 @@ export default function Cart({ navigation }) {
   var [allOrders, getOrder] = useState(null);
   var [numberOfObjects, getNumber] = useState("");
   var [currentUserLog, setCurrentUser] = useState("alidarov");
+  var res = {
+    goods: [],
+    user_login: currentUserLog,
+    price: 0,
+    status: false,
+  };
   async function setCurUser() {
     let res = await AsyncStorage.getItem("someKey");
     setCurrentUser(res);
@@ -53,6 +59,7 @@ export default function Cart({ navigation }) {
       "https://6279ea5773bad506857f53b2.mockapi.io/api/orders/" + itemID,
       result
     );
+    await axios.post("https://6279ea5773bad506857f53b2.mockapi.io/api/orders", res)
   }
   console.log(currentUserLog);
   setCurUser();

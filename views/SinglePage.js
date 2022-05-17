@@ -9,12 +9,14 @@ import {
   Image,
   StyleSheet,
   FlatList,
+  Pressable
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App({ route, navigation }) {
   var [currentUserLog, setCurrentUser] = useState("");
+  var getIngridient = []
   const loadScene = () => {
     navigation.goBack();
   };
@@ -40,6 +42,10 @@ export default function App({ route, navigation }) {
   var result = null;
   var setItem = null;
   var finalPrice = 0;
+  function sendIngridient(obj) {
+    getIngridient.push(obj)
+    console.log(getIngridient)
+  }
   async function sendOrder() {
     console.log(currentUserLog);
     var prevZakaz = await axios.get(
@@ -64,6 +70,7 @@ export default function App({ route, navigation }) {
             price: route.params.price,
             options: [],
             image: route.params.images[1],
+            ingridients: getIngridient
           };
           item.price = finalPrice + parseInt(setItem.price);
           item.goods.push(setItem);
@@ -74,12 +81,6 @@ export default function App({ route, navigation }) {
             result
           );
           console.log("2");
-        } else if (item.user_login == currentUserLog && item.status === true && item.status != false ) {
-          await axios.post(
-            "https://6279ea5773bad506857f53b2.mockapi.io/api/orders",
-            res
-          );
-          console.log("3");
         }
       });
     }
@@ -129,6 +130,7 @@ export default function App({ route, navigation }) {
               <Text style={{ fontSize: 24, marginBottom: 20 }}>
                 {route.params.title}
               </Text>
+              <Button onPress={sendOrder} title="Отправить заказ" />
               <FlatList
                 style={{
                   width: "100%",
@@ -137,190 +139,39 @@ export default function App({ route, navigation }) {
                   flexWrap: "wrap",
                 }}
                 data={route.params.ingridients}
-                renderItem={({ item }) => {
-                  item + ", ";
-                }}
+                renderItem={({ item }) => (
+                  <Pressable onPress={ sendIngridient (item) }>
+                    <View
+                      style={{
+                        width: "100%",
+                        padding: 8,
+                        boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
+                        borderRadius: 12,
+                      }}
+                    >
+                      <Image
+                        style={{ width: null, minHeight: 90 }}
+                        source={{
+                          uri: item.image,
+                        }}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          textAlign: "center",
+                          marginBottom: 10,
+                          height: 32,
+                        }}
+                      >
+                        Сырный бортик
+                      </Text>
+                      <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                        800тг.
+                      </Text>
+                    </View>
+                  </Pressable>
+                )}
               />
-              <Button onPress={sendOrder} title="Отправить заказ" />
-              <View
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  marginTop: 12,
-                }}
-              >
-                <View
-                  style={{
-                    width: "32%",
-                    padding: 8,
-                    boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
-                    borderRadius: 12,
-                  }}
-                >
-                  <Image
-                    style={{ width: null, minHeight: 90 }}
-                    source={{
-                      uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/6ddfe6ba104342928bf1b59acc8d508d.png",
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      textAlign: "center",
-                      marginBottom: 10,
-                      height: 32,
-                    }}
-                  >
-                    Сырный бортик
-                  </Text>
-                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
-                    800тг.
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    width: "32%",
-                    padding: 8,
-                    boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
-                    borderRadius: 12,
-                  }}
-                >
-                  <Image
-                    style={{ width: null, minHeight: 90 }}
-                    source={{
-                      uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DB9FFD8DC324",
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      textAlign: "center",
-                      marginBottom: 10,
-                      height: 32,
-                    }}
-                  >
-                    Острый халапеньо
-                  </Text>
-                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
-                    250тг.
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    width: "32%",
-                    padding: 8,
-                    boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
-                    borderRadius: 12,
-                  }}
-                >
-                  <Image
-                    style={{ width: null, minHeight: 90 }}
-                    source={{
-                      uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DBA9907841D1",
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      textAlign: "center",
-                      marginBottom: 10,
-                      height: 32,
-                    }}
-                  >
-                    Чеддер и пармезан
-                  </Text>
-                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
-                    350тг.
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    width: "32%",
-                    padding: 8,
-                    boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
-                    borderRadius: 12,
-                  }}
-                >
-                  <Image
-                    style={{ width: null, minHeight: 90 }}
-                    source={{
-                      uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DBA02B9BBDD1",
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      textAlign: "center",
-                      marginBottom: 10,
-                      height: 32,
-                    }}
-                  >
-                    Ветчина
-                  </Text>
-                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
-                    350тг.
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    width: "32%",
-                    padding: 8,
-                    boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
-                    borderRadius: 12,
-                  }}
-                >
-                  <Image
-                    style={{ width: null, minHeight: 90 }}
-                    source={{
-                      uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DB9FEDF53067",
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      textAlign: "center",
-                      marginBottom: 10,
-                      height: 32,
-                    }}
-                  >
-                    Цыпленок{" "}
-                  </Text>
-                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
-                    350тг.
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    width: "32%",
-                    padding: 8,
-                    boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
-                    borderRadius: 12,
-                  }}
-                >
-                  <Image
-                    style={{ width: null, minHeight: 90 }}
-                    source={{
-                      uri: "https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A262427A95111E9DBA8CF1B6A99",
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      textAlign: "center",
-                      marginBottom: 10,
-                      height: 32,
-                    }}
-                  >
-                    Шампиньоны
-                  </Text>
-                  <Text style={{ textAlign: "center", fontWeight: 500 }}>
-                    250тг.
-                  </Text>
-                </View>
-              </View>
             </View>
           </View>
         </View>
