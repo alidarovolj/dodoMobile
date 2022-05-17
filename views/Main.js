@@ -117,6 +117,7 @@ export default function Main({ navigation }) {
     // await AsyncStorage.setItem("someKey", loginLogin);
     // getOrders();
     setCookie("loggedIn", loginLogin);
+    window.location.reload(false);
   };
   const showValue = async () => {
     let a = String(await AsyncStorage.getItem("someKey"));
@@ -125,7 +126,7 @@ export default function Main({ navigation }) {
   getProducts();
   getUsers();
   return (
-    <SafeAreaView style={{ height: "100%" }}>
+    <View style={{ height: "100%" }}>
       <View style={styles.container}>
         <Modal
           style={{ flex: 1, backgroundColor: "#fff" }}
@@ -148,12 +149,14 @@ export default function Main({ navigation }) {
                 }}
               >
                 <TextInput
+                  placeholderTextColor="#000"
                   style={{
-                    backgroundColor: "gray",
-                    padding: 5,
+                    backgroundColor: "white",
+                    padding: 15,
                     borderRadius: 8,
-                    width: "100%",
+                    marginBottom: 10,
                   }}
+                  placeholder="Поиск продуктов"
                   onChangeText={(e) => onChangeSearch(e)}
                 />
                 <Text
@@ -229,27 +232,12 @@ export default function Main({ navigation }) {
             setModalVisible(!modalVisible);
           }}
         >
-          <SafeAreaView>
-            <View
+          {/* <View
               style={{
                 padding: 10,
                 backgroundColor: "rgb(243, 243, 247)",
               }}
             >
-              <Text
-                style={{
-                  padding: 10,
-                  borderRadius: 999,
-                }}
-                onPress={() => setModalVisible((modalVisible = false))}
-              >
-                <FontAwesome
-                  style={{
-                    fontSize: 20,
-                  }}
-                  name="chevron-left"
-                />
-              </Text>
               <View>
                 <Text
                   style={{
@@ -330,74 +318,103 @@ export default function Main({ navigation }) {
                 />
               </View>
             </View>
-            <Text>{cookies.loggedIn}</Text>
-            <View
+            <Text>{cookies.loggedIn}</Text> */}
+          <View
+            style={{
+              paddingTop: 50,
+              padding: 10,
+              backgroundColor: "rgb(243, 243, 247)",
+            }}
+          >
+            <Text
               style={{
                 padding: 10,
-                backgroundColor: "rgb(243, 243, 247)",
+                borderRadius: 999,
               }}
+              onPress={() => setModalVisible((modalVisible = false))}
             >
-              <View>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 24,
-                    fontWeight: "700",
-                    marginBottom: 20,
-                  }}
-                >
-                  Войти
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 19,
-                    fontWeight: "400",
-                    marginBottom: 10,
-                  }}
-                >
-                  Логин
-                </Text>
-                <TextInput
-                  onChangeText={(e) => getLoginName((loginLogin = e))}
-                  style={{
-                    backgroundColor: "white",
-                    padding: 5,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  placeholder="Укажите логин"
-                />
-                <Text
-                  style={{
-                    fontSize: 19,
-                    fontWeight: "400",
-                    marginBottom: 10,
-                  }}
-                >
-                  Пароль
-                </Text>
-                <TextInput
-                  onChangeText={(e) => getPasswordName((loginPassword = e))}
-                  style={{
-                    backgroundColor: "white",
-                    padding: 5,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  placeholder="Укажите пароль"
-                />
-                <Button
-                  title="Отправить"
-                  onPress={saveValue}
+              <FontAwesome
+                style={{
+                  fontSize: 20,
+                }}
+                name="chevron-left"
+              />
+            </Text>
+            <View style={{ height: "100%" }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 24,
+                  fontWeight: "700",
+                  marginBottom: 20,
+                }}
+              >
+                Войти
+              </Text>
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: "400",
+                  marginBottom: 10,
+                }}
+              >
+                Логин
+              </Text>
+              <TextInput
+                onChangeText={(e) => getLoginName((loginLogin = e))}
+                placeholderTextColor="#000"
+                style={{
+                  backgroundColor: "white",
+                  padding: 15,
+                  borderRadius: 8,
+                  marginBottom: 10,
+                }}
+                placeholder="Укажите логин"
+              />
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: "400",
+                  marginBottom: 10,
+                }}
+              >
+                Пароль
+              </Text>
+              <TextInput
+                placeholderTextColor="#000"
+                onChangeText={(e) => getPasswordName((loginPassword = e))}
+                style={{
+                  backgroundColor: "white",
+                  padding: 15,
+                  borderRadius: 8,
+                  marginBottom: 10,
+                }}
+                placeholder="Укажите пароль"
+              />
+              <Pressable onPress={saveValue}>
+                <View
                   style={{
                     width: "100%",
                     backgroundColor: "rgb(255, 105, 0)",
-                    borderRadius: 100,
+                    padding: 15,
+                    borderRadius: 8,
+                    marginTop: 20,
                   }}
-                />
-              </View>
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#fff",
+                      fontWeight: "bold",
+                      fontSize: 19,
+                    }}
+                  >
+                    Отправить
+                  </Text>
+                </View>
+              </Pressable>
             </View>
-          </SafeAreaView>
+          </View>
         </Modal>
         <View
           style={{
@@ -406,6 +423,7 @@ export default function Main({ navigation }) {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
+            paddingTop: 50,
             padding: 15,
           }}
         >
@@ -417,8 +435,8 @@ export default function Main({ navigation }) {
             }}
           >
             <Text style={{ fontSize: 22, fontWeight: "600", marginRight: 7 }}>
-              {/* Алматы */}
-              {<Text>{cookies.loggedIn}</Text>}
+              Алматы
+              {/* {<Text>{cookies.loggedIn}</Text>} */}
             </Text>
             <FontAwesome name="chevron-down" />
           </View>
@@ -436,9 +454,9 @@ export default function Main({ navigation }) {
               <Pressable onPress={() => setModalVisible(true)}>
                 <FontAwesome style={{ fontSize: 20 }} name="user" />
               </Pressable>
-              <Text style={{ color: "#000" }}>
-                {<Text>{cookies.loggedIn}</Text>}
-              </Text>
+              {/* <Text style={{ color: "#000" }}>
+                 {<Text>{cookies.loggedIn}</Text>} 
+              </Text> */}
             </View>
           </View>
         </View>
@@ -480,7 +498,7 @@ export default function Main({ navigation }) {
           </View>
         </View>
         <FlatList
-          style={{ width: "100%", marginBottom: 100 }}
+          style={{ width: "100%" }}
           data={allProducts}
           renderItem={({ item }) => (
             <Pressable onPress={() => navigation.navigate("SinglePage", item)}>
@@ -504,21 +522,28 @@ export default function Main({ navigation }) {
                     {item.title}
                   </Text>
                   <Text>{item.desc}</Text>
-                  <Text
+                  <View
                     style={{
                       backgroundColor: "#ffefe5",
+                      alignSelf: "flex-start",
                       color: "#de813f",
                       paddingTop: 5,
                       paddingBottom: 5,
-                      paddingRight: 10,
-                      paddingLeft: 10,
-                      fontSize: 18,
+                      paddingRight: 20,
+                      paddingLeft: 20,
                       borderRadius: 15,
                       marginTop: 10,
                     }}
                   >
-                    от {item.price}т
-                  </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        color: "#de813f",
+                      }}
+                    >
+                      от {item.price}т
+                    </Text>
+                  </View>
                 </View>
               </View>
             </Pressable>
@@ -527,7 +552,9 @@ export default function Main({ navigation }) {
       </View>
       <View style={{ position: "relative" }}>
         <Pressable onPress={() => navigation.navigate("Cart")}>
-          <View style={{ backgroundColor: "rgb(255, 105, 0)" }}>
+          <View
+            style={{ paddingBottom: 10, backgroundColor: "rgb(255, 105, 0)" }}
+          >
             {/* <svg
               style={{ margin: "auto" }}
               width="32"
@@ -560,7 +587,7 @@ export default function Main({ navigation }) {
           </View>
         </Pressable>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
