@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import MainStack from "./navigate";
 import { StyleSheet, View, Text } from "react-native";
+import { CookiesProvider } from "react-cookie";
 
 export default function App() {
   return (
     <>
-      <MainStack />
+      <CookiesProvider>
+        <MainStack />
+      </CookiesProvider>
       {/* <View
         style={{
           position: "fixed",

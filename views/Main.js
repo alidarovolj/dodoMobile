@@ -16,8 +16,10 @@ import {
   TextInput,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCookies, Cookies } from "react-cookie";
 
 export default function Main({ navigation }) {
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   var [allProducts, getProduct] = useState(null);
   var [searchFilter, setSearchFilter] = useState("");
   var [allOrders, getOrder] = useState("");
@@ -111,9 +113,10 @@ export default function Main({ navigation }) {
   //   }
   // });
   // }
-  const saveValue = async () => {
-    await AsyncStorage.setItem("someKey", loginLogin);
+  const saveValue = () => {
+    // await AsyncStorage.setItem("someKey", loginLogin);
     // getOrders();
+    setCookie("loggedIn", loginLogin);
   };
   const showValue = async () => {
     let a = String(await AsyncStorage.getItem("someKey"));
@@ -327,7 +330,7 @@ export default function Main({ navigation }) {
                 />
               </View>
             </View>
-            <Text>{currentUserLog}</Text>
+            <Text>{cookies.loggedIn}</Text>
             <View
               style={{
                 padding: 10,
@@ -415,7 +418,7 @@ export default function Main({ navigation }) {
           >
             <Text style={{ fontSize: 22, fontWeight: "600", marginRight: 7 }}>
               {/* Алматы */}
-              {currentUserLog}
+              {<Text>{cookies.loggedIn}</Text>}
             </Text>
             <FontAwesome name="chevron-down" />
           </View>
@@ -433,7 +436,9 @@ export default function Main({ navigation }) {
               <Pressable onPress={() => setModalVisible(true)}>
                 <FontAwesome style={{ fontSize: 20 }} name="user" />
               </Pressable>
-              <Text style={{ color: "#000" }}>{currentUserLog}</Text>
+              <Text style={{ color: "#000" }}>
+                {<Text>{cookies.loggedIn}</Text>}
+              </Text>
             </View>
           </View>
         </View>

@@ -10,24 +10,20 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCookies, Cookies } from "react-cookie";
 
 export default function Cart({ navigation }) {
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   var [currentOrder, getCurrentOrder] = useState("");
   var [allOrders, getOrder] = useState(null);
   var [numberOfObjects, getNumber] = useState("");
-  var [currentUserLog, setCurrentUser] = useState("alidarov");
+  var [currentUserLog, setCurrentUser] = useState(cookies.loggedIn);
   var res = {
     goods: [],
     user_login: currentUserLog,
     price: 0,
     status: false,
   };
-  async function setCurUser() {
-    let res = await AsyncStorage.getItem("someKey");
-    setCurrentUser(res);
-  }
   async function getOrders() {
     useEffect(() => {
       async function getAllOrders() {
@@ -59,10 +55,12 @@ export default function Cart({ navigation }) {
       "https://6279ea5773bad506857f53b2.mockapi.io/api/orders/" + itemID,
       result
     );
-    await axios.post("https://6279ea5773bad506857f53b2.mockapi.io/api/orders", res)
+    await axios.post(
+      "https://6279ea5773bad506857f53b2.mockapi.io/api/orders",
+      res
+    );
   }
   console.log(currentUserLog);
-  setCurUser();
   getOrders();
   return (
     <SafeAreaView>
