@@ -2,14 +2,11 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import {
   Text,
-  Button,
   View,
-  SafeAreaView,
-  ScrollView,
   Image,
   StyleSheet,
   FlatList,
-  Pressable
+  Pressable,
 } from "react-native";
 import { useCookies, Cookies } from "react-cookie";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -68,7 +65,7 @@ export default function Cart({ navigation }) {
   console.log(currentUserLog);
   getOrders();
   return (
-    <View style={{ paddingTop: 50, flex: 1, backgroundColor: 'white' }}>
+    <View style={{ paddingTop: 50, flex: 1, backgroundColor: "white" }}>
       <View
         style={{
           width: "100%",
@@ -79,26 +76,26 @@ export default function Cart({ navigation }) {
           backgroundColor: "#fff",
         }}
       >
-      <Text
-        style={{
-          elevation: 3,
-          backgroundColor: "white",
-          padding: 10,
-          borderRadius: "100%",
-          position: "absolute",
-          zIndex: 10,
-          left: 10,
-          top: 10,
-        }}
-        onPress={loadScene}
-      >
-        <FontAwesome
+        <Text
           style={{
-            fontSize: 20,
+            elevation: 3,
+            backgroundColor: "white",
+            padding: 10,
+            borderRadius: "100%",
+            position: "absolute",
+            zIndex: 10,
+            left: 10,
+            top: 10,
           }}
-          name="chevron-down"
-        />
-      </Text>
+          onPress={loadScene}
+        >
+          <FontAwesome
+            style={{
+              fontSize: 20,
+            }}
+            name="chevron-down"
+          />
+        </Text>
         <Text style={{ fontSize: 18, textAlign: "center" }}>Корзина</Text>
       </View>
       <View style={{ width: "100%", backgroundColor: "#fff", padding: 16 }}>
@@ -130,17 +127,21 @@ export default function Cart({ navigation }) {
           )}
         />
         <Pressable onPress={setStatus}>
-          <View style={{ backgroundColor: 'rgb(255, 105, 0)', width: "100%", padding: 10, marginBottom: 30, borderRadius: 5 }}>
-            <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>Отправить заказ</Text>
+          <View
+            style={{
+              backgroundColor: "rgb(255, 105, 0)",
+              width: "100%",
+              padding: 10,
+              marginBottom: 30,
+              borderRadius: 5,
+            }}
+          >
+            <Text style={{ color: "white", textAlign: "center", fontSize: 20 }}>
+              Отправить заказ
+            </Text>
           </View>
         </Pressable>
       </View>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    width: "100%",
-  },
-});
