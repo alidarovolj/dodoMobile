@@ -88,8 +88,8 @@ export default function App({ route, navigation }) {
     }
   }
   return (
-    <SafeAreaView>
-      <ScrollView>
+      <View style={{ paddingTop: 50,
+        backgroundColor: "white" }}>
         <View style={styles.container}>
           <View
             style={{
@@ -120,7 +120,7 @@ export default function App({ route, navigation }) {
               />
             </Text>
             <Image
-              style={{ width: null, minHeight: 350 }}
+              style={{ width: null, minHeight: 300 }}
               source={{ uri: route.params.images[0] }}
             />
             <View
@@ -132,23 +132,27 @@ export default function App({ route, navigation }) {
               <Text style={{ fontSize: 24, marginBottom: 20 }}>
                 {route.params.title}
               </Text>
-              <Button onPress={sendOrder} title="Отправить заказ" />
+              <Pressable onPress={sendOrder}>
+                <View style={{ backgroundColor: 'rgb(255, 105, 0)', width: "100%", padding: 10, marginBottom: 30, borderRadius: 5 }}>
+                  <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>Отправить заказ</Text>
+                </View>
+              </Pressable>
               <FlatList
+                // horizontal={true}
                 style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "row",
-                  flexWrap: "wrap",
+                  width: "100%"
                 }}
+                contentContainerStyle={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1 }}
                 data={route.params.ingridients}
                 renderItem={({ item }) => (
                   <Pressable onPress={ sendIngridient.bind(this, item) }>
                     <View
                       style={{
-                        width: "100%",
+                        width: "32%",
                         padding: 8,
                         boxShadow: "rgba(6, 5, 50, 0.12) 0px 4px 20px",
                         borderRadius: 12,
+                        borderWidth: 1
                       }}
                     >
                       <Image
@@ -167,7 +171,7 @@ export default function App({ route, navigation }) {
                       >
                         Сырный бортик
                       </Text>
-                      <Text style={{ textAlign: "center", fontWeight: 500 }}>
+                      <Text style={{ textAlign: "center" }}>
                         800тг.
                       </Text>
                     </View>
@@ -177,8 +181,7 @@ export default function App({ route, navigation }) {
             </View>
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
   );
 }
 const styles = StyleSheet.create({

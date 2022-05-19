@@ -9,8 +9,10 @@ import {
   Image,
   StyleSheet,
   FlatList,
+  Pressable
 } from "react-native";
 import { useCookies, Cookies } from "react-cookie";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function Cart({ navigation }) {
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
@@ -23,6 +25,9 @@ export default function Cart({ navigation }) {
     user_login: currentUserLog,
     price: 0,
     status: false,
+  };
+  const loadScene = () => {
+    navigation.goBack();
   };
   async function getOrders() {
     useEffect(() => {
@@ -63,7 +68,7 @@ export default function Cart({ navigation }) {
   console.log(currentUserLog);
   getOrders();
   return (
-    <SafeAreaView>
+    <View style={{ paddingTop: 50, flex: 1, backgroundColor: 'white' }}>
       <View
         style={{
           width: "100%",
@@ -74,8 +79,27 @@ export default function Cart({ navigation }) {
           backgroundColor: "#fff",
         }}
       >
-        <Text>{currentUserLog}</Text>
-        <Text style={{ fontSize: 18 }}>Корзина</Text>
+      <Text
+        style={{
+          elevation: 3,
+          backgroundColor: "white",
+          padding: 10,
+          borderRadius: "100%",
+          position: "absolute",
+          zIndex: 10,
+          left: 10,
+          top: 10,
+        }}
+        onPress={loadScene}
+      >
+        <FontAwesome
+          style={{
+            fontSize: 20,
+          }}
+          name="chevron-down"
+        />
+      </Text>
+        <Text style={{ fontSize: 18, textAlign: "center" }}>Корзина</Text>
       </View>
       <View style={{ width: "100%", backgroundColor: "#fff", padding: 16 }}>
         <Text style={{ fontSize: 24, marginBottom: 20 }}>
@@ -95,7 +119,7 @@ export default function Cart({ navigation }) {
               }}
             >
               <Image
-                style={{ width: 100, height: 100 }}
+                style={{ width: 100, height: 100, marginRight: 15 }}
                 source={{ uri: item.image }}
               />
               <View>
@@ -105,13 +129,13 @@ export default function Cart({ navigation }) {
             </View>
           )}
         />
-        <Button
-          onPress={setStatus}
-          title="Заказать"
-          style={{ width: "100%" }}
-        />
+        <Pressable onPress={setStatus}>
+          <View style={{ backgroundColor: 'rgb(255, 105, 0)', width: "100%", padding: 10, marginBottom: 30, borderRadius: 5 }}>
+            <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>Отправить заказ</Text>
+          </View>
+        </Pressable>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 const styles = StyleSheet.create({

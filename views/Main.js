@@ -81,11 +81,6 @@ export default function Main({ navigation }) {
       x.title.toLowerCase().includes(res)
     );
     setSearchFilter(filteredData);
-    // allProducts.forEach(prod => {
-    //   if(prod.includes(res)) {
-    //     console.log(prod)
-    //   }
-    // });
     console.log(filteredData);
   }
   async function sendUser() {
@@ -94,28 +89,14 @@ export default function Main({ navigation }) {
       phone: fullPhone,
       password: fullPassword,
     });
+    await axios.post("https://6279ea5773bad506857f53b2.mockapi.io/api/orders", {
+      goods: [],
+      user_login: fullLogin,
+      price: 0,
+      status: false
+    });
   }
-  // function login() {
-  // allUsers?.forEach((item) => {
-  //   if (item.login === loginLogin && item.password === loginPassword) {
-  //     console.log("совпадают");
-  //     async () => {
-  //       try {
-  //         await AsyncStorage.setItem("loggedInLogin", item.login);
-  //         let getIt = await AsyncStorage.getItem("loggedInLogin");
-  //         setCurrentUser(currentUserLog = getIt)
-  //       } catch (e) {
-  //         console.log(e)
-  //       }
-  //     };
-  //   } else {
-  //     console.log("Данные не совпадают");
-  //   }
-  // });
-  // }
   const saveValue = () => {
-    // await AsyncStorage.setItem("someKey", loginLogin);
-    // getOrders();
     setCookie("loggedIn", loginLogin);
     window.location.reload(false);
   };
@@ -232,12 +213,28 @@ export default function Main({ navigation }) {
             setModalVisible(!modalVisible);
           }}
         >
-          {/* <View
+          <ScrollView>
+            <View
               style={{
                 padding: 10,
                 backgroundColor: "rgb(243, 243, 247)",
+                paddingTop: 50,
               }}
             >
+              <Text
+                style={{
+                  padding: 10,
+                  borderRadius: 999,
+                }}
+                onPress={() => setModalVisible((modalVisible = false))}
+              >
+                <FontAwesome
+                  style={{
+                    fontSize: 20,
+                  }}
+                  name="chevron-left"
+                />
+              </Text>
               <View>
                 <Text
                   style={{
@@ -261,9 +258,10 @@ export default function Main({ navigation }) {
                 </Text>
                 <TextInput
                   onChangeText={(e) => getLogin((fullLogin = e))}
+                  placeholderTextColor="#000"
                   style={{
                     backgroundColor: "white",
-                    padding: 5,
+                    padding: 15,
                     borderRadius: 8,
                     marginBottom: 10,
                   }}
@@ -280,9 +278,10 @@ export default function Main({ navigation }) {
                 </Text>
                 <TextInput
                   onChangeText={(e) => getPhone((fullPhone = e))}
+                  placeholderTextColor="#000"
                   style={{
                     backgroundColor: "white",
-                    padding: 5,
+                    padding: 15,
                     borderRadius: 8,
                     marginBottom: 10,
                   }}
@@ -299,122 +298,123 @@ export default function Main({ navigation }) {
                 </Text>
                 <TextInput
                   onChangeText={(e) => getPassword((fullPassword = e))}
+                  placeholderTextColor="#000"
                   style={{
                     backgroundColor: "white",
-                    padding: 5,
+                    padding: 15,
                     borderRadius: 8,
                     marginBottom: 10,
                   }}
                   placeholder="Укажите пароль"
                 />
-                <Button
-                  title="Отправить"
-                  onPress={sendUser}
-                  style={{
-                    width: "100%",
-                    backgroundColor: "rgb(255, 105, 0)",
-                    borderRadius: 100,
-                  }}
-                />
-              </View>
-            </View>
-            <Text>{cookies.loggedIn}</Text> */}
-          <View
-            style={{
-              paddingTop: 50,
-              padding: 10,
-              backgroundColor: "rgb(243, 243, 247)",
-            }}
-          >
-            <Text
-              style={{
-                padding: 10,
-                borderRadius: 999,
-              }}
-              onPress={() => setModalVisible((modalVisible = false))}
-            >
-              <FontAwesome
-                style={{
-                  fontSize: 20,
-                }}
-                name="chevron-left"
-              />
-            </Text>
-            <View style={{ height: "100%" }}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 24,
-                  fontWeight: "700",
-                  marginBottom: 20,
-                }}
-              >
-                Войти
-              </Text>
-              <Text
-                style={{
-                  fontSize: 19,
-                  fontWeight: "400",
-                  marginBottom: 10,
-                }}
-              >
-                Логин
-              </Text>
-              <TextInput
-                onChangeText={(e) => getLoginName((loginLogin = e))}
-                placeholderTextColor="#000"
-                style={{
-                  backgroundColor: "white",
-                  padding: 15,
-                  borderRadius: 8,
-                  marginBottom: 10,
-                }}
-                placeholder="Укажите логин"
-              />
-              <Text
-                style={{
-                  fontSize: 19,
-                  fontWeight: "400",
-                  marginBottom: 10,
-                }}
-              >
-                Пароль
-              </Text>
-              <TextInput
-                placeholderTextColor="#000"
-                onChangeText={(e) => getPasswordName((loginPassword = e))}
-                style={{
-                  backgroundColor: "white",
-                  padding: 15,
-                  borderRadius: 8,
-                  marginBottom: 10,
-                }}
-                placeholder="Укажите пароль"
-              />
-              <Pressable onPress={saveValue}>
-                <View
-                  style={{
-                    width: "100%",
-                    backgroundColor: "rgb(255, 105, 0)",
-                    padding: 15,
-                    borderRadius: 8,
-                    marginTop: 20,
-                  }}
-                >
-                  <Text
+
+                <Pressable onPress={sendUser}>
+                  <View
                     style={{
-                      textAlign: "center",
-                      color: "#fff",
-                      fontWeight: "bold",
-                      fontSize: 19,
+                      width: "100%",
+                      backgroundColor: "rgb(255, 105, 0)",
+                      padding: 15,
+                      borderRadius: 8,
+                      marginTop: 20,
                     }}
                   >
-                    Отправить
-                  </Text>
-                </View>
-              </Pressable>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: 19,
+                      }}
+                    >
+                      Отправить
+                    </Text>
+                  </View>
+                </Pressable>
+              </View>
             </View>
-          </View>
+            <View
+              style={{
+                paddingTop: 50,
+                padding: 10,
+                backgroundColor: "rgb(243, 243, 247)",
+              }}
+            >
+              <View style={{ height: "100%" }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 24,
+                    fontWeight: "700",
+                    marginBottom: 20,
+                  }}
+                >
+                  Войти
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 19,
+                    fontWeight: "400",
+                    marginBottom: 10,
+                  }}
+                >
+                  Логин
+                </Text>
+                <TextInput
+                  onChangeText={(e) => getLoginName((loginLogin = e))}
+                  placeholderTextColor="#000"
+                  style={{
+                    backgroundColor: "white",
+                    padding: 15,
+                    borderRadius: 8,
+                    marginBottom: 10,
+                  }}
+                  placeholder="Укажите логин"
+                />
+                <Text
+                  style={{
+                    fontSize: 19,
+                    fontWeight: "400",
+                    marginBottom: 10,
+                  }}
+                >
+                  Пароль
+                </Text>
+                <TextInput
+                  placeholderTextColor="#000"
+                  onChangeText={(e) => getPasswordName((loginPassword = e))}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 15,
+                    borderRadius: 8,
+                    marginBottom: 10,
+                  }}
+                  placeholder="Укажите пароль"
+                />
+                <Pressable onPress={saveValue}>
+                  <View
+                    style={{
+                      width: "100%",
+                      backgroundColor: "rgb(255, 105, 0)",
+                      padding: 15,
+                      borderRadius: 8,
+                      marginTop: 20,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: 19,
+                      }}
+                    >
+                      Отправить
+                    </Text>
+                  </View>
+                </Pressable>
+              </View>
+            </View>
+          </ScrollView>
         </Modal>
         <View
           style={{
