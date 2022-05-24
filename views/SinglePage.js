@@ -202,3 +202,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(<Goal isGoal={false} />);

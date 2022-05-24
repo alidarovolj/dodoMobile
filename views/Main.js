@@ -61,6 +61,215 @@ export default function Main({ navigation }) {
       getAllOrders();
     }, []);
   }
+  function RenderRegLog() {
+    if (currentUserLog == null) {
+      return (
+        <ScrollView>
+          <View
+            style={{
+              padding: 10,
+              backgroundColor: "rgb(243, 243, 247)",
+              paddingTop: 50,
+            }}
+          >
+            <Text
+              style={{
+                padding: 10,
+                borderRadius: 999,
+              }}
+              onPress={() => setModalVisible((modalVisible = false))}
+            >
+              <FontAwesome
+                style={{
+                  fontSize: 20,
+                }}
+                name="chevron-left"
+              />
+            </Text>
+            <View>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 24,
+                  fontWeight: "700",
+                  marginBottom: 10,
+                }}
+              >
+                Регистрация
+              </Text>
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: "400",
+                  marginBottom: 10,
+                }}
+              >
+                Логин
+              </Text>
+              <TextInput
+                onChangeText={(e) => getLogin((fullLogin = e))}
+                placeholderTextColor="#000"
+                style={{
+                  backgroundColor: "white",
+                  padding: 15,
+                  borderRadius: 8,
+                  marginBottom: 10,
+                }}
+                placeholder="Укажите логин"
+              />
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: "400",
+                  marginBottom: 10,
+                }}
+              >
+                Телефон
+              </Text>
+              <TextInput
+                onChangeText={(e) => getPhone((fullPhone = e))}
+                placeholderTextColor="#000"
+                style={{
+                  backgroundColor: "white",
+                  padding: 15,
+                  borderRadius: 8,
+                  marginBottom: 10,
+                }}
+                placeholder="Укажите телефон"
+              />
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: "400",
+                  marginBottom: 10,
+                }}
+              >
+                Пароль
+              </Text>
+              <TextInput
+                onChangeText={(e) => getPassword((fullPassword = e))}
+                placeholderTextColor="#000"
+                style={{
+                  backgroundColor: "white",
+                  padding: 15,
+                  borderRadius: 8,
+                  marginBottom: 10,
+                }}
+                placeholder="Укажите пароль"
+              />
+
+              <Pressable onPress={sendUser}>
+                <View
+                  style={{
+                    width: "100%",
+                    backgroundColor: "rgb(255, 105, 0)",
+                    padding: 15,
+                    borderRadius: 8,
+                    marginTop: 20,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#fff",
+                      fontWeight: "bold",
+                      fontSize: 19,
+                    }}
+                  >
+                    Отправить
+                  </Text>
+                </View>
+              </Pressable>
+            </View>
+          </View>
+          <View
+            style={{
+              paddingTop: 50,
+              padding: 10,
+              backgroundColor: "rgb(243, 243, 247)",
+            }}
+          >
+            <View style={{ height: "100%" }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 24,
+                  fontWeight: "700",
+                  marginBottom: 20,
+                }}
+              >
+                Войти
+              </Text>
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: "400",
+                  marginBottom: 10,
+                }}
+              >
+                Логин
+              </Text>
+              <TextInput
+                onChangeText={(e) => getLoginName((loginLogin = e))}
+                placeholderTextColor="#000"
+                style={{
+                  backgroundColor: "white",
+                  padding: 15,
+                  borderRadius: 8,
+                  marginBottom: 10,
+                }}
+                placeholder="Укажите логин"
+              />
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: "400",
+                  marginBottom: 10,
+                }}
+              >
+                Пароль
+              </Text>
+              <TextInput
+                placeholderTextColor="#000"
+                onChangeText={(e) => getPasswordName((loginPassword = e))}
+                style={{
+                  backgroundColor: "white",
+                  padding: 15,
+                  borderRadius: 8,
+                  marginBottom: 10,
+                }}
+                placeholder="Укажите пароль"
+              />
+              <Pressable onPress={saveValue}>
+                <View
+                  style={{
+                    width: "100%",
+                    backgroundColor: "rgb(255, 105, 0)",
+                    padding: 15,
+                    borderRadius: 8,
+                    marginTop: 20,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#fff",
+                      fontWeight: "bold",
+                      fontSize: 19,
+                    }}
+                  >
+                    Отправить
+                  </Text>
+                </View>
+              </Pressable>
+            </View>
+          </View>
+        </ScrollView>
+      );
+    } else {
+      return <Text>Зарегистрирован</Text>
+    }
+  }
   function getUsers() {
     useEffect(() => {
       async function getAllUsers() {
@@ -106,7 +315,7 @@ export default function Main({ navigation }) {
   const logout = () => {
     if (currentUserLog != null) {
       return (
-        <Pressable onPress={() => removeCookie('loggedIn')}>
+        <Pressable onPress={() => removeCookie("loggedIn")}>
           <View
             style={{
               backgroundColor: "rgb(255, 105, 0)",
@@ -148,7 +357,7 @@ export default function Main({ navigation }) {
                   flexDirection: "row",
                   alignItems: "center",
                   marginBottom: 30,
-                  width: '100%'
+                  width: "100%",
                 }}
               >
                 <TextInput
@@ -158,14 +367,14 @@ export default function Main({ navigation }) {
                     padding: 15,
                     borderRadius: 8,
                     borderWidth: 1,
-                    borderColor: '#e9e9e9',
-                    width: '75%'
+                    borderColor: "#e9e9e9",
+                    width: "75%",
                   }}
                   placeholder="Поиск продуктов"
                   onChangeText={(e) => onChangeSearch(e)}
                 />
                 <Text
-                  style={{ marginLeft: 10, width: '100%' }}
+                  style={{ marginLeft: 10, width: "100%" }}
                   onPress={() => setModalSearchVisible(false)}
                 >
                   Отменить
@@ -236,209 +445,7 @@ export default function Main({ navigation }) {
             Alert.alert("Modal has been closed.");
             setModalVisible(!modalVisible);
           }}
-        >
-          <ScrollView>
-            <View
-              style={{
-                padding: 10,
-                backgroundColor: "rgb(243, 243, 247)",
-                paddingTop: 50,
-              }}
-            >
-              <Text
-                style={{
-                  padding: 10,
-                  borderRadius: 999,
-                }}
-                onPress={() => setModalVisible((modalVisible = false))}
-              >
-                <FontAwesome
-                  style={{
-                    fontSize: 20,
-                  }}
-                  name="chevron-left"
-                />
-              </Text>
-              <View>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 24,
-                    fontWeight: "700",
-                    marginBottom: 10,
-                  }}
-                >
-                  Регистрация
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 19,
-                    fontWeight: "400",
-                    marginBottom: 10,
-                  }}
-                >
-                  Логин
-                </Text>
-                <TextInput
-                  onChangeText={(e) => getLogin((fullLogin = e))}
-                  placeholderTextColor="#000"
-                  style={{
-                    backgroundColor: "white",
-                    padding: 15,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  placeholder="Укажите логин"
-                />
-                <Text
-                  style={{
-                    fontSize: 19,
-                    fontWeight: "400",
-                    marginBottom: 10,
-                  }}
-                >
-                  Телефон
-                </Text>
-                <TextInput
-                  onChangeText={(e) => getPhone((fullPhone = e))}
-                  placeholderTextColor="#000"
-                  style={{
-                    backgroundColor: "white",
-                    padding: 15,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  placeholder="Укажите телефон"
-                />
-                <Text
-                  style={{
-                    fontSize: 19,
-                    fontWeight: "400",
-                    marginBottom: 10,
-                  }}
-                >
-                  Пароль
-                </Text>
-                <TextInput
-                  onChangeText={(e) => getPassword((fullPassword = e))}
-                  placeholderTextColor="#000"
-                  style={{
-                    backgroundColor: "white",
-                    padding: 15,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  placeholder="Укажите пароль"
-                />
-
-                <Pressable onPress={sendUser}>
-                  <View
-                    style={{
-                      width: "100%",
-                      backgroundColor: "rgb(255, 105, 0)",
-                      padding: 15,
-                      borderRadius: 8,
-                      marginTop: 20,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        color: "#fff",
-                        fontWeight: "bold",
-                        fontSize: 19,
-                      }}
-                    >
-                      Отправить
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
-            </View>
-            <View
-              style={{
-                paddingTop: 50,
-                padding: 10,
-                backgroundColor: "rgb(243, 243, 247)",
-              }}
-            >
-              <View style={{ height: "100%" }}>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 24,
-                    fontWeight: "700",
-                    marginBottom: 20,
-                  }}
-                >
-                  Войти
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 19,
-                    fontWeight: "400",
-                    marginBottom: 10,
-                  }}
-                >
-                  Логин
-                </Text>
-                <TextInput
-                  onChangeText={(e) => getLoginName((loginLogin = e))}
-                  placeholderTextColor="#000"
-                  style={{
-                    backgroundColor: "white",
-                    padding: 15,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  placeholder="Укажите логин"
-                />
-                <Text
-                  style={{
-                    fontSize: 19,
-                    fontWeight: "400",
-                    marginBottom: 10,
-                  }}
-                >
-                  Пароль
-                </Text>
-                <TextInput
-                  placeholderTextColor="#000"
-                  onChangeText={(e) => getPasswordName((loginPassword = e))}
-                  style={{
-                    backgroundColor: "white",
-                    padding: 15,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  placeholder="Укажите пароль"
-                />
-                <Pressable onPress={saveValue}>
-                  <View
-                    style={{
-                      width: "100%",
-                      backgroundColor: "rgb(255, 105, 0)",
-                      padding: 15,
-                      borderRadius: 8,
-                      marginTop: 20,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        color: "#fff",
-                        fontWeight: "bold",
-                        fontSize: 19,
-                      }}
-                    >
-                      Отправить
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
-            </View>
-          </ScrollView>
-        </Modal>
+        >{RenderRegLog()}</Modal>
         <View
           style={{
             display: "flex",
