@@ -12,13 +12,16 @@ import {
   Pressable,
   Modal,
   TextInput,
+  RefreshControl,
 } from "react-native";
 import { useCookies, Cookies } from "react-cookie";
 
 export default function Main({ navigation }) {
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  var [modalContent, setModalContent] = useState({});
   var [allProducts, getProduct] = useState(null);
   var [searchFilter, setSearchFilter] = useState("");
+  var [stories, getStory] = useState("");
   var [allOrders, getOrder] = useState("");
   var [fullLogin, getLogin] = useState("");
   var [fullPhone, getPhone] = useState("");
@@ -30,7 +33,16 @@ export default function Main({ navigation }) {
   var [loginPassword, getPasswordName] = useState("");
   var [allUsers, getUser] = useState("");
   var [modalVisible, setModalVisible] = useState(false);
+  var [modalStory, setmodalStory] = useState(false);
   var [modalSearchVisible, setModalSearchVisible] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   function getProducts() {
     useEffect(() => {
       async function getAllProducts() {
@@ -41,6 +53,18 @@ export default function Main({ navigation }) {
         getProduct(newProducts);
       }
       getAllProducts();
+    }, []);
+  }
+  function getStories() {
+    useEffect(() => {
+      async function getAllStories() {
+        let res = await axios.get(
+          "https://6279ea5773bad506857f53b2.mockapi.io/api/Stories"
+        );
+        let newProducts = res.data;
+        getStory(newProducts);
+      }
+      getAllStories();
     }, []);
   }
   function getOrders() {
@@ -267,7 +291,7 @@ export default function Main({ navigation }) {
         </ScrollView>
       );
     } else {
-      return <Text>Зарегистрирован</Text>
+      return <Text>Зарегистрирован</Text>;
     }
   }
   function getUsers() {
@@ -335,6 +359,7 @@ export default function Main({ navigation }) {
     }
   };
   getProducts();
+  getStories();
   getUsers();
   return (
     <View style={{ height: "100%" }}>
@@ -445,7 +470,9 @@ export default function Main({ navigation }) {
             Alert.alert("Modal has been closed.");
             setModalVisible(!modalVisible);
           }}
-        >{RenderRegLog()}</Modal>
+        >
+          {RenderRegLog()}
+        </Modal>
         <View
           style={{
             display: "flex",
@@ -487,6 +514,85 @@ export default function Main({ navigation }) {
             <Text>{logout()}</Text>
           </View>
         </View>
+        <FlatList
+          style={{ width: "100%", padding: 15, height: "50%" }}
+          data={stories}
+          horizontal={true}
+          renderItem={({ item }) => (
+            <View>
+              <Pressable
+                onPress={setmodalStory}
+                onPressIn={() => setModalContent(item)}
+              >
+                <View style={{ position: "relative" }}>
+                  <Image
+                    style={{
+                      width: 90,
+                      height: 110,
+                      borderRadius: 10,
+                      marginRight: 10,
+                      borderWidth: 2,
+                      borderColor: "rgb(255, 105, 0)",
+                    }}
+                    source={{ uri: item.image }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      width: "50%",
+                      position: "absolute",
+                      bottom: 10,
+                      left: 10,
+                      color: "#fff",
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                </View>
+              </Pressable>
+            </View>
+          )}
+        />
+        <Modal
+          animationType="slide"
+          visible={modalStory}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalStory(!modalStory);
+          }}
+        >
+          <Text
+            onPress={() => setmodalStory(false)}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "30px",
+              color: "#fff",
+              fontSize: 20,
+              zIndex: 10,
+            }}
+          >
+            <FontAwesome style={{ fontSize: 20 }} name="close" />
+          </Text>
+          <Image
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            source={{ uri: modalContent.image }}
+          />
+          <Text
+            style={{
+              position: "absolute",
+              left: "32%",
+              bottom: "50%",
+              color: "#fff",
+              fontSize: 20,
+            }}
+          >
+            {modalContent.title}
+          </Text>
+        </Modal>
         <View style={{ padding: 15, width: "100%" }}>
           <View
             style={{
@@ -506,6 +612,7 @@ export default function Main({ navigation }) {
                 fontSize: 19,
                 fontWeight: "500",
                 backgroundColor: "#fff",
+                borderRadius: 10,
               }}
             >
               На доставку
@@ -518,6 +625,7 @@ export default function Main({ navigation }) {
                 paddingBottom: 5,
                 fontSize: 19,
                 fontWeight: "500",
+                borderRadius: 10,
               }}
             >
               В зале
@@ -526,6 +634,9 @@ export default function Main({ navigation }) {
         </View>
         <FlatList
           style={{ width: "100%" }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           data={allProducts}
           renderItem={({ item }) => (
             <Pressable onPress={() => navigation.navigate("SinglePage", item)}>

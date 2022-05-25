@@ -1,135 +1,17 @@
-{
-  "goods": [
-    {
-      "id": 1,
-      "title": "Домашняя",
-      "desc": "Пикантная пепперони из цыпленка, ветчина из цыпленка, соленые огурчики, томаты, моцарелла, томатный соус",
-      "price": 2300,
-      "images": [
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/271813ff44fc41588760b93201eb08a5_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/54f1bebf8008465e828e573d312816ae_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/0de3f153379b4c96b1042069fd8dc83c_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/271813ff44fc41588760b93201eb08a5_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/3bb12aa6f0cb4b9992ba0506c4a3ef94_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/e79765c7d6b3478e92f6f9b617e48259_760x760.jpeg"
-      ],
-      "ingridients": [
-        "Пикантная пепперони из цыпленка",
-        "ветчина из цыпленка",
-        "соленые огурчики",
-        "томаты",
-        "моцарелла",
-        "томатный соус"
-      ],
-      "category": "pizza"
-    },
-    {
-      "id": 2,
-      "title": "Овощи гриль",
-      "desc": "Овощи гриль, томаты, красный лук, моцарелла, соус песто, томатный соус, чеснок",
-      "price": 2500,
-      "images": [
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/68babbf959544c3bb6c01ad062287c17_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/a402c8aba8a94496a0f71aa0baa975ca_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/511d2e88d8534e5c8a4476d5453dc46b_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/68babbf959544c3bb6c01ad062287c17_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/e353999710d54e718bf685949e118b30_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/ea194c034b124bcb892cd9dc276df7e7_760x760.jpeg"
-      ],
-      "ingridients": [
-        "Овощи гриль",
-        "красный лук",
-        "моцарелла",
-        "соус песто",
-        "томатный соус",
-        "чеснок"
-      ],
-      "category": "pizza"
-    },
-    {
-      "id": 3,
-      "title": "Классическая",
-      "desc": "Увеличенная порция моцареллы, томатный соус",
-      "price": 1800,
-      "images": [
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/82f48599cecf4663864f38346e49ce94_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/da0a83ee1bd248a28afe9565b59e1749_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/3f04cc04329c4fe48a5c7f5e7e18dc64_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/82f48599cecf4663864f38346e49ce94_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/678ce410cc81495ab77c68f6a8f602e3_760x760.jpeg",
-        "https://dodopizza-a.akamaihd.net/static/Img/Products/1a10411df0d04b0cb9549290c2cfdd55_760x760.jpeg"
-      ],
-      "ingridients": [
-        "Увеличенная порция моцареллы",
-        "томатный соус"
-      ],
-      "category": "pizza"
-    }
-  ],
-  "orders": [
-    {
-      "goods": [
-        {
-          "title": "Домашняя",
-          "price": 2300,
-          "options": [],
-          "image": "https://dodopizza-a.akamaihd.net/static/Img/Products/54f1bebf8008465e828e573d312816ae_760x760.jpeg"
-        },
-        {
-          "title": "Домашняя",
-          "price": 2300,
-          "options": [],
-          "image": "https://dodopizza-a.akamaihd.net/static/Img/Products/54f1bebf8008465e828e573d312816ae_760x760.jpeg"
-        },
-        {
-          "title": "Овощи гриль",
-          "price": 2500,
-          "options": [],
-          "image": "https://dodopizza-a.akamaihd.net/static/Img/Products/a402c8aba8a94496a0f71aa0baa975ca_760x760.jpeg"
-        },
-        {
-          "title": "Домашняя",
-          "price": 2300,
-          "options": [],
-          "image": "https://dodopizza-a.akamaihd.net/static/Img/Products/54f1bebf8008465e828e573d312816ae_760x760.jpeg"
-        },
-        {
-          "title": "Классическая",
-          "price": 1800,
-          "options": [],
-          "image": "https://dodopizza-a.akamaihd.net/static/Img/Products/da0a83ee1bd248a28afe9565b59e1749_760x760.jpeg"
-        },
-        {
-          "title": "Овощи гриль",
-          "price": 2500,
-          "options": [],
-          "image": "https://dodopizza-a.akamaihd.net/static/Img/Products/a402c8aba8a94496a0f71aa0baa975ca_760x760.jpeg"
-        }
-      ],
-      "user_login": "alidarov",
-      "price": 13700,
-      "status": false,
-      "id": 1
-    }
-  ],
-  "users": [
-    {
-      "id": 1,
-      "login": "alidarov",
-      "password": "123",
-      "phone": "87472367503"
-    },
-    {
-      "login": "Olzhas",
-      "phone": "215467123786",
-      "password": "qwerty",
-      "id": 2
-    },
-    {
-      "login": "diana",
-      "phone": "53267361268",
-      "password": "qwerty",
-      "id": 3
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "title": "Уходит легенда",
+    "image": "https://wallpaper.dog/large/20459082.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Уходит легенда",
+    "image": "https://wallpaper.dog/large/20459082.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Уходит легенда",
+    "image": "https://wallpaper.dog/large/20459082.jpg"
+  }
+]
