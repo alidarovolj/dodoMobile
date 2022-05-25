@@ -515,13 +515,13 @@ export default function Main({ navigation }) {
           </View>
         </View>
         <FlatList
-          style={{ width: "100%", padding: 15, height: "50%" }}
+          style={{ width: "100%", padding: 15, height: 250 }}
           data={stories}
           horizontal={true}
           renderItem={({ item }) => (
             <View>
               <Pressable
-                onPress={setmodalStory}
+                onPress={() => setmodalStory(true)}
                 onPressIn={() => setModalContent(item)}
               >
                 <View style={{ position: "relative" }}>
@@ -565,14 +565,13 @@ export default function Main({ navigation }) {
             onPress={() => setmodalStory(false)}
             style={{
               position: "absolute",
-              right: "10px",
-              top: "30px",
+              right: 20,
+              top: 50,
               color: "#fff",
-              fontSize: 20,
               zIndex: 10,
             }}
           >
-            <FontAwesome style={{ fontSize: 20 }} name="close" />
+            <FontAwesome style={{ fontSize: 30 }} name="close" />
           </Text>
           <Image
             style={{
