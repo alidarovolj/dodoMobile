@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import RNPickerSelect from "react-native-picker-select";
 import {
   StyleSheet,
   Text,
@@ -13,6 +14,7 @@ import {
   Modal,
   TextInput,
   RefreshControl,
+  Appearance,
 } from "react-native";
 import { useCookies, Cookies } from "react-cookie";
 
@@ -182,7 +184,7 @@ export default function Main({ navigation }) {
                 placeholder="Укажите пароль"
               />
 
-              <Pressable onPress={sendUser}>
+              <Pressable onPressIn={sendUser}>
                 <View
                   style={{
                     width: "100%",
@@ -325,6 +327,7 @@ export default function Main({ navigation }) {
       price: 0,
       status: false,
     });
+    setModalVisible(false)
   }
   const saveValue = () => {
     allUsers.forEach((user) => {
@@ -358,6 +361,8 @@ export default function Main({ navigation }) {
       return <Text></Text>;
     }
   };
+  const colorScheme = Appearance.getColorScheme();
+  console.log(colorScheme);
   getProducts();
   getStories();
   getUsers();
@@ -492,7 +497,16 @@ export default function Main({ navigation }) {
             }}
           >
             <Text style={{ fontSize: 22, fontWeight: "600", marginRight: 7 }}>
-              Алматы
+              <RNPickerSelect
+              value={cookies.city}
+                onValueChange={(value) => setCookie("city", value)}
+                items={[
+                  { label: "Алматы", value: "Алматы" },
+                  { label: "Нур-Султан", value: "Нур-Султан" },
+                  { label: "Павлодар", value: "Павлодар" },
+                  { label: "Караганда", value: "Караганда" },
+                ]}
+              />
             </Text>
             <FontAwesome name="chevron-down" />
           </View>
@@ -602,33 +616,43 @@ export default function Main({ navigation }) {
               flexDirection: "row",
             }}
           >
-            <Text
+            <View
               style={{
                 width: "50%",
-                textAlign: "center",
-                paddingTop: 5,
-                paddingBottom: 5,
-                fontSize: 19,
-                fontWeight: "500",
+                paddingTop: 10,
+                paddingBottom: 10,
                 backgroundColor: "#fff",
                 borderRadius: 10,
               }}
             >
-              На доставку
-            </Text>
-            <Text
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 19,
+                  fontWeight: "500",
+                }}
+              >
+                На доставку
+              </Text>
+            </View>
+            <View
               style={{
                 width: "50%",
-                textAlign: "center",
-                paddingTop: 5,
-                paddingBottom: 5,
-                fontSize: 19,
-                fontWeight: "500",
+                paddingTop: 10,
+                paddingBottom: 10,
                 borderRadius: 10,
               }}
             >
-              В зале
-            </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 19,
+                  fontWeight: "500",
+                }}
+              >
+                В зале
+              </Text>
+            </View>
           </View>
         </View>
         <FlatList
